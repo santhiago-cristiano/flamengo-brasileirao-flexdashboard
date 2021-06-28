@@ -7,7 +7,7 @@ output:
     vertical_layout: fill
     theme: journal
     social: menu
-    source_code: embed
+    source_code: https://github.com/santhiago-cristiano/flamengo-brasileirao-flexdashboard
 ---
 <style>
 .navbar {
