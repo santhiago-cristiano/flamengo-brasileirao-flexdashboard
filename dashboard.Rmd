@@ -28,7 +28,7 @@ knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 
 ```{r, include=FALSE}
 source(
-  file = "./R/brasileirao-flamengo.R",
+  file = "dados.R",
   local = knitr::knit_global(),
   echo = TRUE, 
   encoding = "UTF-8"

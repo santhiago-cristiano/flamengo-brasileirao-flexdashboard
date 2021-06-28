@@ -17,7 +17,7 @@ library(lubridate)
 # Lendo os dados ----------------------------------------------------------
 
 brasileirao <- read_csv2(
-  file = "./dados/campeonato-brasileiro-full.csv",
+  file = "campeonato-brasileiro-full.csv",
   col_types = cols(
     Data = col_date(format = "%d/%m/%Y")
   )
