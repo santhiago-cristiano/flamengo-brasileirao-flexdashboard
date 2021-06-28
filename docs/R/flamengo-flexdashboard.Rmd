@@ -1,0 +1,147 @@
+---
+title: "Estatísticas do Flamengo no Brasileirão de Pontos Corridos (2003-2020)"
+#author: "Santhiago Cristiano"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    vertical_layout: fill
+    theme: journal
+    social: menu
+    source_code: "https://github.com/santhiago-cristiano/flamengo-brasileirao-flexdashboard"
+# runtime: shiny
+# resource_files:
+#   - dados/campeonato-brasileiro-full.csv
+---
+<style>
+.navbar {
+  background-color:#c3281e;
+}
+</style>
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(ggplot2)
+library(plotly)
+
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+```
+
+```{r, include=FALSE}
+source(
+  file = "./R/brasileirao-flamengo.R",
+  local = knitr::knit_global(),
+  echo = TRUE, 
+  encoding = "UTF-8"
+)
+```
+
+Gols marcados e sofridos
+=========================
+
+Row {data-width=1000}
+-----------------------------------------------------------------------
+
+### Gols marcados de acordo com o mando de campo
+
+```{r}
+p1 <- flamengo %>%
+  group_by(ano, mando_campo) %>% 
+  summarise(Gols = sum(gols_marcados, na.rm = TRUE), .groups = "drop") %>% 
+  ggplot() +
+  aes(x = ano, y = Gols, fill = mando_campo) + 
+  geom_bar(aes(text = mando_campo), position = "stack", stat = "identity") +
+  coord_flip() +
+  scale_x_reverse(breaks = seq(2003, 2020, 1)) +
+  scale_y_continuous(breaks = seq(0, 90, 10)) + 
+  scale_fill_manual(values = c("#c3281e", "black")) +
+  labs(
+    x = "Edição do Campeonato",
+    y = "Gols Marcados",
+    fill = "",
+    caption = "* de 2003 a 2005 o campeonato possuía mais de 38 rodadas."
+  ) + 
+  theme_minimal()
+
+ggplotly(p1, tooltip = c("text", "y"))
+```
+
+### Gols sofridos de acordo com o mando de campo
+
+```{r}
+p2 <- flamengo %>%
+  group_by(ano, mando_campo) %>% 
+  summarise(Gols = sum(gols_sofridos, na.rm = TRUE), .groups = "drop") %>% 
+  ggplot() +
+  aes(x = ano, y = Gols, fill = mando_campo) + 
+  geom_bar(aes(text = mando_campo), position = "stack", stat = "identity") +
+  coord_flip() +
+  scale_x_reverse(breaks = seq(2003, 2020, 1)) +
+  scale_y_continuous(breaks = seq(0, 80, 10)) + 
+  scale_fill_manual(values = c("#c3281e", "black")) +
+  labs(
+    x = "Edição do Campeonato",
+    y = "Gols Sofridos",
+    fill = "",
+    caption = "* de 2003 a 2005 o campeonato possuía mais de 38 rodadas."
+  ) + 
+  theme_minimal()
+
+ggplotly(p2, tooltip = c("text", "y"))
+```
+
+Número de derrotas e vitórias
+=========================
+
+Row {data-width=1000}
+-----------------------------------------------------------------------
+
+### Número de vitórias de acordo com o mando de campo
+
+```{r}
+p3 <- flamengo %>% 
+  filter(resultado == "Vitória") %>% 
+  group_by(ano, mando_campo) %>% 
+  count(resultado) %>% 
+  ggplot() + 
+  aes(x = ano, y = n, fill = mando_campo) +
+  geom_bar(aes(text = mando_campo), position = "stack", stat = "identity") +
+  coord_flip() +
+  scale_x_reverse(breaks = seq(2003, 2020, 1)) +
+  scale_y_continuous(breaks = seq(0, 40, 5)) +
+  scale_fill_manual(values = c("#c3281e", "black")) +
+  labs(
+    x = "Edição do Campeonato",
+    y = "Número de Vitórias",
+    fill = "",
+    caption = "* de 2003 a 2005 o campeonato possuía mais de 38 rodadas."
+  ) +
+  theme_minimal()
+
+ggplotly(p3, tooltip = c("text", "y"))
+```
+
+### Número de derrotas de acordo com o mando de campo
+
+```{r}
+p4 <- flamengo %>% 
+  filter(resultado == "Derrota") %>% 
+  group_by(ano, mando_campo) %>% 
+  count(resultado) %>% 
+  ggplot() + 
+  aes(x = ano, y = n, fill = mando_campo) +
+  geom_bar(aes(text = mando_campo), position = "stack", stat = "identity") +
+  coord_flip() +
+  scale_x_reverse(breaks = seq(2003, 2020, 1)) +
+  scale_y_continuous(breaks = seq(0, 20, 5)) +
+  scale_fill_manual(values = c("#c3281e", "black")) +
+  labs(
+    x = "Edição do Campeonato",
+    y = "Número de Derrotas",
+    fill = "",
+    caption = "* de 2003 a 2005 o campeonato possuía mais de 38 rodadas."
+  ) +
+  theme_minimal()
+
+ggplotly(p4, tooltip = c("text", "y"))
+```
+
