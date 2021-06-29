@@ -9,8 +9,6 @@ output:
     social: menu
     source_code: "https://github.com/santhiago-cristiano/flamengo-brasileirao-flexdashboard"
 # runtime: shiny
-# resource_files:
-#   - dados/campeonato-brasileiro-full.csv
 ---
 <style>
 .navbar {
@@ -22,8 +20,6 @@ output:
 library(flexdashboard)
 library(ggplot2)
 library(plotly)
-
-knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 ```
 
 ```{r, include=FALSE}
@@ -35,7 +31,7 @@ source(
 )
 ```
 
-Gols marcados e sofridos
+Gols
 =========================
 
 Row {data-width=1000}
@@ -89,7 +85,7 @@ p2 <- flamengo %>%
 ggplotly(p2, tooltip = c("text", "y"))
 ```
 
-Número de derrotas e vitórias
+Derrotas e vitórias
 =========================
 
 Row {data-width=1000}
